@@ -56,17 +56,15 @@ function handleMinimize() {
     <div class="box ms-2">
       <div class="text-center d-flex flex-row justify-content-between" style="height: 30px">
         <div ref="handleRef" class="h-100 w-100" style="cursor: move"></div>
-        <button @click="handleMinimize" class="btn btn-sm border-0" style="width: 45px">
+        <button @click="handleMinimize" class="btn btn-sm border-0">
           <span class="iconfont icon-zuixiaohua text-white fs-6"></span>
         </button>
       </div>
       <div class="try-play-body d-flex flex-row">
-        <div class="try-play-left w-50 border-right border-secondary">
+        <div class="try-play-left w-50">
           <LeftPanle></LeftPanle>
         </div>
-        <div
-          class="try-play-right w-50 border-start rounded border-top border-secondary overflow-x-hidden overflow-y-auto scrollbar-none"
-        >
+        <div class="try-play-right w-50 border-start rounded border border-secondary overflow-x-hidden overflow-y-auto scrollbar-none"  style="margin-right: 4px;">
           <RightPanle></RightPanle>
         </div>
       </div>
@@ -80,7 +78,7 @@ $height: 390px;
 
 .try-play {
   width: $width;
-  background-color: #2254a1;
+  background-color: #18191a;
 
   .try-play-body {
     height: $height;

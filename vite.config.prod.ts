@@ -35,12 +35,12 @@ export default function (): UserConfig {
           '@wangeditor/editor',
           'element-plus',
           '@element-plus/icons-vue',
-          'pinyin-pro',
+          // 'pinyin-pro',
         ],
         output: {
           exports: 'named',
           globals: {
-            vue: 'Vue',
+            'vue': 'Vue',
             '@wangeditor/editor': 'wangEditor',
             'element-plus': 'ElementPlus',
             '@element-plus/icons-vue': 'ElementPlusIconsVue',
@@ -53,6 +53,9 @@ export default function (): UserConfig {
       alias: {
         '@': resolve(__dirname, 'src'),
       },
+      dedupe: [
+        'vue'
+      ]
     },
   }
 }

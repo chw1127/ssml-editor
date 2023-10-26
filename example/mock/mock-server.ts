@@ -150,11 +150,11 @@ mock.onPost('/play').reply(() => {
   return [200, <AudioInfo>{ id: 'id', src: audio.value }]
 })
 
-mock.onPost('/recentUsage').reply((config) => {
-  const recent = JSON.parse(config.data) as RecentUsageSpeaker
-  const data = { ...recent, id: '123' }
-  return [200, data]
-})
+// mock.onPost('/recentUsage').reply((config) => {
+//   const recent = JSON.parse(config.data) as RecentUsageSpeaker
+//   const data = { ...recent, id: '123' }
+//   return [200, data]
+// })
 
 mock.onGet('/recentUsage').reply(() => {
   const data = <RecentUsageSpeaker[]>[

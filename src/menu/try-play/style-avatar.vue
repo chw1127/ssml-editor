@@ -35,7 +35,7 @@ const bgColor = getRandomColor()
     <div
       v-if="data?.emoji"
       class="rounded-circle d-flex border-info justify-content-center align-items-center"
-      style="height: 30px; width: 30px"
+      style="height: 36px; width: 36px"
       :style="{ 'background-color': bgColor }"
       :class="{ 'border border-2 border-warning': activate }"
     >
@@ -45,10 +45,10 @@ const bgColor = getRandomColor()
       v-else
       :src="data?.avatar || demoAvatar()"
       class="rounded-circle"
-      style="height: 30px; width: 30px"
+      style="height: 36px; width: 36px"
       :class="{ 'border border-2 border-warning': activate }"
     />
-    <div class="anchor-avatar-name text-white" style="font-size: 0.5rem">{{ data?.label }}</div>
+    <div class="anchor-avatar-name text-white" style="font-size: 0.8rem">{{ data?.label }}</div>
   </div>
 </template>
 

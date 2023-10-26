@@ -9,6 +9,8 @@ export interface Speaker {
   isFree: boolean
   isStar: boolean
   isSupper24K: boolean
+  gender:string
+  localeZH:string
   roles: (LabelValue & { avatar?: string; emoji?: string })[]
   styles: (LabelValue & { avatar?: string; emoji?: string })[]
 }
@@ -21,6 +23,8 @@ export function defaultSpeaker(): Speaker {
     isFree: false,
     isStar: false,
     isSupper24K: false,
+    gender:'',
+    localeZH:'',
     roles: [],
     styles: [],
     name: '',

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ElSlider, ElIcon } from 'element-plus'
-import SpeakerAvatar from './speaker-avatar.vue'
+import { ElSlider} from 'element-plus'
 import PlayButton from './play-button.vue'
 import type { CSSProperties } from 'vue'
-import { reactive, ref, onUnmounted, computed, watch, onMounted, toRaw } from 'vue'
+import { reactive, ref, onUnmounted, computed, watch, onMounted } from 'vue'
 import { formatTime } from '@/utils'
-import { Star, StarFilled } from '@element-plus/icons-vue'
 import { getConfig } from '@/config'
 import StyleAvatar from './style-avatar.vue'
 import { defaultSpeed, defaultPitch } from './data'
@@ -39,7 +37,6 @@ const pitch = ref(0)
 
 const timeMaxText = computed(() => formatTime(timeMax.value))
 const timeText = computed(() => formatTime(time.value))
-const isStar = computed(() => tryPlayStore.speaker.isStar)
 
 const speedMarks = reactive<Marks>(defaultSpeed())
 const pitchMarks = reactive<Marks>(defaultPitch())
@@ -88,9 +85,6 @@ watch(currentTime, (newValue) => {
   if (!isInput.value) time.value = newValue
 })
 
-async function handleStar() {
-  await tryPlayStore.star(!isStar.value)
-}
 
 function handleUpdateStarTheCache(speakerId: string, isStar: boolean) {
   const speakerCache = speakerList.value.find((v) => v.id === speakerId)
@@ -114,9 +108,6 @@ async function handleCategoryClick(value: string) {
   }
 }
 
-function handleSpeakerClick(value: Speaker) {
-  tryPlayStore.setSpeaker(toRaw(value))
-}
 
 function handleTimeInput() {
   isInput.value = true
@@ -130,35 +121,23 @@ function handleTimeChange(time: Arrayable<number>) {
   isInput.value = false
 }
 
-function handleSpeakerDetailShow() {
-  emitter.emit('tryplay-speaker-detail-show', tryPlayStore.speaker)
-}
 </script>
 
 <template>
-  <div class="right-panle w-100 px-3 text-white" style="font-size: 0.5rem">
+  <div class="right-panle w-100 px-3 text-white" style="font-size: 1rem">
     <div class="mt-2 d-flex text-center justify-content-between align-items-center">
       <div class="me-auto d-flex flex-row align-items-center">
         <PlayButton></PlayButton>
-        <div class="ms-2 d-flex flex-column justify-content-between" style="height: 50px">
+        <div class="ms-2 d-flex flex-column justify-content-between">
           <div class="d-flex dlex-row column-gap-2 align-items-end">
             <span class="fs-6">{{ tryPlayStore.speaker.displayName }}</span>
             <span style="font-size: 0.5rem">{{ speed }}x</span>
           </div>
-          <div class="d-flex flex-row column-gap-2 align-items-center">
-            <ElIcon @click="handleStar" class="fs-6" :style="{ color: isStar ? 'red' : 'white' }">
-              <StarFilled v-if="isStar"></StarFilled>
-              <Star v-else></Star>
-            </ElIcon>
-            <span v-if="tryPlayStore.speaker.isSupper24K" class="badge text-bg-primary px-2">
-              24K
-            </span>
-          </div>
+          <div style="font-size: 0.7rem;margin-top: 5px;">{{ tryPlayStore.speaker.name }}</div>
         </div>
       </div>
-      <div class="d-flex flex-column align-items-end">
-        <div class="text-info">音频时长，请以生成后的为准</div>
-        <div class="mt-1">
+      <div class="d-flex flex-column align-items-end" style="width: 100px;">
+        <div class="mt-1" style="font-size: .7em;">
           <span>{{ timeText }}</span>
           <span>/</span>
           <span>{{ timeMaxText }}</span>
@@ -173,21 +152,23 @@ function handleSpeakerDetailShow() {
         ></ElSlider>
       </div>
     </div>
+    <div class="mt-2" style="font-size: 0.8em;">角色风格：</div>
     <div
-      class="role-list mt-2 d-flex flex-row flex-wrap justify-content-start align-items-center row-gap-2 column-gap-3"
+      class="role-list mt-2 d-flex flex-row flex-wrap justify-content-start align-items-center row-gap-2 column-gap-3 p-2"
     >
       <div
         @click="handleRoleClick(item.value)"
         v-for="(item, index) in tryPlayStore.speaker.roles"
         :key="index"
         class="rounded-pill px-1"
-        :class="{ border: item.value === (rootExpressAs.role || '') }"
+        :class="{ 'border': item.value === (rootExpressAs.role || '') }"
       >
         {{ item.label }}
       </div>
     </div>
+    <div class="mt-2" style="font-size: 0.8em;">说话风格：</div>
     <ul
-      class="mt-2 d-flex flex-row flex-wrap justify-content-start align-items-center row-gap-1 column-gap-2"
+      class="mt-2 d-flex flex-row flex-wrap justify-content-start align-items-center row-gap-1 column-gap-2 p-2"
     >
       <li
         class="mx-2"
@@ -201,10 +182,7 @@ function handleSpeakerDetailShow() {
         ></StyleAvatar>
       </li>
     </ul>
-    <div class="my-3">
-      <span @click="handleSpeakerDetailShow" class="border rounded-pill p-1">配音师详情</span>
-    </div>
-    <div class="right-box">
+    <div class="right-box mt-2">
       <div>
         <span>语速：{{ speed }}x</span>
       </div>
@@ -214,6 +192,7 @@ function handleSpeakerDetailShow() {
         :max="speedRange[1]"
         :step="0.05"
         :marks="speedMarks"
+        size="small"
       ></ElSlider>
     </div>
     <div class="right-box">
@@ -226,33 +205,8 @@ function handleSpeakerDetailShow() {
         :max="pitchRange[1]"
         :step="0.2"
         :marks="pitchMarks"
+        size="small"
       ></ElSlider>
-    </div>
-    <div>
-      <ul class="d-flex flex-row gap-3 my-3">
-        <li
-          @click="handleCategoryClick(item.value)"
-          v-for="(item, index) in category"
-          :key="index"
-          class="rounded-pill px-1"
-          :class="{ border: item.value === flag }"
-        >
-          {{ item.label }}
-        </li>
-      </ul>
-      <ul class="d-flex flex-row flex-wrap row-gap-2 column-gap-3 mb-3" style="min-height: 100px">
-        <li @click="handleSpeakerClick(item)" v-for="(item, index) in speakerList" :key="index">
-          <SpeakerAvatar
-            :activate="item.name === tryPlayStore.speaker.name"
-            :data="{
-              label: item.displayName,
-              value: item.name,
-              avatar: item.avatar,
-              isFree: item.isFree,
-            }"
-          ></SpeakerAvatar>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
@@ -260,5 +214,6 @@ function handleSpeakerDetailShow() {
 <style lang="scss" scoped>
 .right-box {
   height: 75px;
+  font-size:.8em
 }
 </style>

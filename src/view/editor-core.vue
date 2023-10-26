@@ -5,15 +5,29 @@ import { getConfig } from '@/config'
 import { useEditorStore } from '@/stores'
 import Core from '@/core'
 import { emitter } from '@/event-bus'
-import { sleep } from '@/utils'
-import { getEmitter } from '@/core/emitter'
+// import { sleep } from '@/utils'
 
 const emit = defineEmits<{ created: [editor: IDomEditor]; change: [editor: IDomEditor] }>()
-const { setEditor, saveEditorHtml } = useEditorStore()
+const { setEditor} = useEditorStore()
 const ssmlEditorConfig = getConfig()
 
 const boxRef = ref(null)
 const editorRef = shallowRef<IDomEditor>()
+
+const props = withDefaults(
+    defineProps<{
+        html?: string,
+    }>(),
+    {
+      html: '',
+    }
+)
+
+// watch(() => props.html, () => {
+//   if (!editorRef.value) return;
+//   initEditorHtml(editorRef.value)
+// });
+
 
 onMounted(() => {
   Core.install()
@@ -36,13 +50,15 @@ function initEditor() {
         emitter.emit('editor-created', editor)
         emit('created', editor)
         ssmlEditorConfig.editorConfig.onCreated?.(editor)
-        initEditorHtml(editor)
+        // initEditorHtml(editor)
       },
       onChange(editor) {
         emit('change', editor)
         ssmlEditorConfig.editorConfig.onChange?.(editor)
-      },
+      }
+      
     },
+    html:props.html
   })
 
   editorRef.value = editor
@@ -58,24 +74,25 @@ function initEffects() {
   }
 }
 
-async function initEditorHtml(editor: IDomEditor) {
-  const readHtml = ssmlEditorConfig.editorConfig.readHtml
-  if (readHtml) {
-    const html = await readHtml()
-    html && editor.setHtml(html)
-    await sleep(500)
-    editor.focus(true)
-  }
-  getEmitter(editor)?.on('ssml-update', handleSaveEditorHtml)
-}
+// async function initEditorHtml(editor: IDomEditor) {
+//   // const readHtml = ssmlEditorConfig.editorConfig.readHtml
+//   // if (readHtml) {
+//   //   const html = await readHtml()
+//   //   html && editor.setHtml(html)
+//   //   await sleep(500)
+//   //   editor.focus(true)
+//   // }
 
-function handleSaveEditorHtml(editor: IDomEditor) {
-  saveEditorHtml(editor.getHtml)
-}
+//   const html = props.html;
+//   // editor.clear();
+//   editor.setHtml(html);
+//   // await sleep(500)
+//   // editor.focus(true)
+// }
 </script>
 
 <template>
-  <div ref="boxRef" class="editor-core scrollbar" style="height: 70vh; overflow-y: hidden"></div>
+  <div ref="boxRef" class="editor-core scrollbar" style="height: 400px; overflow-y: hidden"></div>
 </template>
 
 <style lang="scss" scoped>

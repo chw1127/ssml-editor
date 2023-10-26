@@ -5,7 +5,7 @@ import { shallowReactive } from 'vue'
 export const useSSMLStore = defineStore('--editor-ssml', () => {
   const rootVoice = shallowReactive<Voice>({
     type: 'ssml-voice',
-    name: '',
+    name: 'zh-CN-XiaoxuanNeural',
     remark: '',
     effect: '',
     children: [],

@@ -1,1 +1,1 @@
-export { default as EditorView } from './editor-view.vue'
+export { default as SSMLEditorView } from './editor-view.vue'

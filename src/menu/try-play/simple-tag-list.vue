@@ -8,7 +8,7 @@ const emit = defineEmits<{ 'update:filter': [value: FilterSpeaker] }>()
 const props = defineProps<{ filter: FilterSpeaker }>()
 
 const ssmlEditorConfig = getConfig()
-const { topFlag, gender, featchTag } = ssmlEditorConfig.tryPlay
+const {gender, featchTag } = ssmlEditorConfig.tryPlay
 
 const tags = ref<LabelValue[]>([])
 
@@ -16,9 +16,6 @@ onMounted(async () => {
   tags.value = await featchTag()
 })
 
-function handleTopFlagClick(value: string) {
-  emit('update:filter', { ...toRaw(props.filter), topFlag: value })
-}
 
 function handleGenderClick(value: string) {
   emit('update:filter', { ...toRaw(props.filter), gender: value })
@@ -31,24 +28,7 @@ function handleTagsClick(value: string) {
 
 <template>
   <div class="tag-list w-100">
-    <div
-      class="w-100 d-flex flex-row border-bottom border-secondary align-items-center"
-      style="height: 40px"
-    >
-      <SimpleTag
-        @click="handleTopFlagClick"
-        v-for="(item, index) in topFlag"
-        :key="index"
-        :value="item.value"
-        :activate="filter.topFlag === item.value"
-      >
-        {{ item.label }}
-      </SimpleTag>
-    </div>
-    <div
-      class="w-100 d-flex flex-row border-bottom border-secondary align-items-center"
-      style="height: 40px"
-    >
+    <div class="d-flex flex-row border-bottom border-secondary align-items-center py-2">
       <SimpleTag
         @click="handleGenderClick"
         v-for="(item, index) in gender"
@@ -60,8 +40,7 @@ function handleTagsClick(value: string) {
       </SimpleTag>
     </div>
     <div
-      style="height: 100px"
-      class="w-100 pt-2 d-flex flex-row flex-wrap align-content-start row-gap-2 overflow-y-auto overflow-x-hidden scrollbar-none"
+      class="w-100 pt-2 py-2  d-flex flex-row flex-wrap overflow-y-auto overflow-x-hidden scrollbar-none"
     >
       <SimpleTag
         @click="handleTagsClick"

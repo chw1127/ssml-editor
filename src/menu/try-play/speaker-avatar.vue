@@ -7,30 +7,29 @@ defineProps<{ activate?: boolean; data?: SpeakerAvatarData }>()
 </script>
 
 <template>
-  <div
-    class="anchor-avatar d-flex flex-column align-items-center text-center justify-content-center position-relative"
-    @click="$emit('click', data?.value)"
+  <div 
+  class="anchor-avatar p-2" 
+  :class="{ 'border border-2 border-warning': activate }"
+  @click="$emit('click', data!.value)" 
+  style="width:210px; border:1px solid #aaa;border-radius: 5px;"
   >
-    <span
-      v-if="!data?.isFree"
-      class="position-absolute top-0 start-100 translate-middle text-bg-danger text-nowrap rounded px-1"
-      style="font-size: 0.5rem"
-      >付费</span
-    >
-    <img
+    <div class="d-flex flex-row ">
+      <img
       :src="data?.avatar || demoAvatar()"
       class="rounded-circle"
       style="height: 40px"
-      :class="{ 'border border-2 border-warning': activate }"
     />
-    <div class="anchor-avatar-name text-white">{{ data?.label }}</div>
+    <div class="flex-1 px-2">
+      <div class="anchor-avatar-name text-white">{{ data?.label }}</div>
+      <div class="anchor-gender text-white" style="font-size: 0.8em;">{{ data?.gender=='Female'?'女':'男' }}</div>
+    </div>
+    </div>
+    <div class="mt-1">
+      <span class="locale rounded-pill px-2" style=" background-color: #eee; color:#666;font-size: 0.7em;">{{ data?.localeZH }}</span>
+    </div>
+    
   </div>
 </template>
 
 <style lang="scss" scoped>
-.anchor-avatar {
-  .anchor-avatar-name {
-    font-size: 12px;
-  }
-}
 </style>

@@ -1,22 +1,17 @@
 
-// import '../mock'
 import type { FilterSpeaker, LabelValue, Speaker } from '@/model'
 import type { FilterBarSearch } from '@/components/bar-search'
 import type { CancellationToken } from '@/utils'
 import type { AudioInfo } from '@/menu/conversion-menu/data'
-import voices from '../mock/voices'
-import DataSource from '../mock/data'
-import { getStyleDes, getRoleDes } from '../mock/emoji-config'
+import voices from './voices'
+import DataSource from './data'
+import { getStyleDes, getRoleDes } from './emoji-config'
 export async function english(word: string): Promise<LabelValue[]> {
-  // const resp = await axios.get('/english', { params: { word } })
-  // return resp.data
   const data = (DataSource.english as Record<string, LabelValue[]>)[word] || []
   return data;
 }
 
 export async function bgm(filter: FilterBarSearch): Promise<LabelValue[]> {
-  // const resp = await axios.get('/bgm', { params: { ...filter } })
-  // return resp.data
   const data = DataSource.audio
     .filter((v) => v.label.includes(filter.word))
     .filter((v) => v.menu.includes(filter.menu))
@@ -27,8 +22,6 @@ export async function bgm(filter: FilterBarSearch): Promise<LabelValue[]> {
 }
 
 export async function special(filter: FilterBarSearch): Promise<LabelValue[]> {
-  // const resp = await axios.get('/special', { params: { ...filter } })
-  // return resp.data
   const data = DataSource.audio
     .filter((v) => v.label.includes(filter.word))
     .filter((v) => v.menu.includes(filter.menu))
@@ -39,8 +32,6 @@ export async function special(filter: FilterBarSearch): Promise<LabelValue[]> {
 }
 
 export async function scene(): Promise<LabelValue[]> {
-  // const resp = await axios.get('/scene')
-  // return resp.data
   const data = [
     { label: '默认场景', value: '' },
     { label: '场景1', value: '1' },
@@ -50,8 +41,6 @@ export async function scene(): Promise<LabelValue[]> {
 }
 
 export async function style(): Promise<LabelValue[]> {
-  // const resp = await axios.get('/style')
-  // return resp.data
   const data = [
     { label: '默认风格', value: '' },
     { label: '风格1', value: '1' },
@@ -61,14 +50,10 @@ export async function style(): Promise<LabelValue[]> {
 }
 
 export async function tag(): Promise<LabelValue[]> {
-  // const resp = await axios.get('/tag')
-  // return resp.data
   return DataSource.speaker.tags;
 }
 
 export async function speaker(filter: FilterSpeaker): Promise<Speaker[]> {
-  // const resp = await axios.get('/speaker', { params: { ...filter } })
-  // return resp.data
   const data = voices
     .filter((v) => v.LocalName.includes(filter.word))
     .filter((v) => v.gender.includes(filter.gender))
@@ -95,14 +80,10 @@ export async function speaker(filter: FilterSpeaker): Promise<Speaker[]> {
         },
     )
     return data;
-    // return Promise.resolve(data);
 
 }
 
 export async function star(speaker: string, star: boolean): Promise<boolean> {
-  // const resp = await axios.get('/star', { params: { speaker, star } })
-  // return resp.data
-
   const [child] = voices.filter((v) => v.name === speaker)
   if (child) {
     return star
@@ -112,36 +93,18 @@ export async function star(speaker: string, star: boolean): Promise<boolean> {
 
 export async function upload(file: File, token: CancellationToken): Promise<AudioInfo> {
   console.log("upload:",file,token);
-  // const source = axios.CancelToken.source()
-  // const formData = new FormData()
-  // formData.append('file', file)
-  // const resp = await axios.post('/upload', formData, {
-  //   headers: {
-  //     'Content-Type': 'multipart/form-data',
-  //   },
-  //   cancelToken: source.token,
-  //   onUploadProgress: () => {
-  //     token.isCancellationRequested() && source.cancel()
-  //   },
-  // })
-  // return resp.data
 
   const data: AudioInfo = { id: '1', src: DataSource.audio[0].value }
   return data
 }
 
 export async function transfer(opt: { audioId: string; speakerId: string }): Promise<AudioInfo> {
-  // const resp = await axios.put('/transfer', { params: { ...opt } })
-  // return resp.data
   console.log("transfer:",opt);
   const data: AudioInfo = { id: '1', src: DataSource.audio[0].value }
   return data
 }
 
 export async function conversionSpeaker(): Promise<Speaker[]> {
-  // const resp = await axios.get('/conversionSpeaker')
-  // return resp.data
-
   const data = voices.map(
     (v) =>
       <Speaker>{
@@ -167,8 +130,6 @@ export async function conversionSpeaker(): Promise<Speaker[]> {
 
 export async function play(ssmlGetter: () => string): Promise<AudioInfo> {
   const ssml = ssmlGetter()
-  // const resp = await axios.post('/play', { ssml })
-  // return resp.data
   console.log("play ssml:",ssml);
 
   const audio = DataSource.audio.find((v) => v.label === 'creativeminds') || DataSource.audio[0]

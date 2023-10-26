@@ -24,17 +24,16 @@ const handleClick = throttle(() => {
     class="play-menu d-flex flex-column justify-content-center align-items-center btn border-0 px-2 py-1 clickable"
     @click="handleClick"
     @mousedown.prevent
-    style="height: 4.5rem"
   >
     <div
       class="play-menu-icon d-flex justify-content-center align-items-center"
-      style="height: 30px; width: 30px"
+      style="height: 24px; width: 24px"
     >
       <slot name="icon">
         <span class="fs-3 iconfont-moyin" :class="[`moyin-icon_${icon}`]"></span>
       </slot>
     </div>
-    <div class="fw-normal" style="font-size: 0.85rem">
+    <div class="fw-normal" style="font-size: 0.85rem;color:#333;">
       <slot></slot>
     </div>
   </button>

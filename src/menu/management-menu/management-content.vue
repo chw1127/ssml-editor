@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { defaultFilterSpeaker, type LabelValue, type Speaker } from '@/model'
-import { ElInput, ElForm, ElTag, ElButton } from 'element-plus'
-import { More } from '@element-plus/icons-vue'
+import { ElInput, ElForm, ElButton } from 'element-plus'
+// import { More } from '@element-plus/icons-vue'
 import SelectList from './select-list.vue'
 import { computed, onMounted, ref, shallowRef, watch } from 'vue'
-import { speed, pitch, type RecentUsageSpeaker, type ContentData } from './data'
+import { speed, pitch,type ContentData } from './data'
 import { type SubmitData } from './data'
-import { emitter } from '@/event-bus'
 import { useElementVisibility } from '@vueuse/core'
-import uniqBy from 'lodash.uniqby'
 import { getConfig } from '@/config'
 
 const emit = defineEmits<{
@@ -18,14 +16,13 @@ const emit = defineEmits<{
 const props = defineProps<{ contentData: ContentData }>()
 
 const ssmlEditorConfig = getConfig()
-const { tryPlay, management } = ssmlEditorConfig
+const { tryPlay } = ssmlEditorConfig
 
 const boxRef = ref<HTMLDivElement>()
 const showMore = ref(false)
 const searchInput = ref('')
 
 const speakerCache = shallowRef<Speaker[]>([])
-const recentUsageCache = ref<RecentUsageSpeaker[]>([])
 const dataListCategory = ref<LabelValue[]>([{ label: '全部类型', value: '' }, ...tryPlay.category])
 const dataListSpeaker = ref<LabelValue[]>([])
 const dataListRole = ref<LabelValue[]>([])
@@ -41,7 +38,6 @@ const contentDataRef = computed(() => props.contentData)
 onMounted(async () => {
   contentDataRef.value.category = dataListCategory.value[0].value
   await handleFetchData()
-  await handleFetchRecentUsage()
 })
 
 watch(visible, (newValue) => {
@@ -132,95 +128,24 @@ async function handleSubmit(label?: string) {
     pitch: contentDataRef.value.pitch,
   }
   emit('submit', data)
-  await handleRecordRecentUsage(data)
 }
 
-async function handleFetchRecentUsage() {
-  try {
-    recentUsageCache.value = await management.fetchRecentUsage()
-  } catch (error) {
-    emitter.emit('error', error)
-  }
-}
-
-async function handleRecordRecentUsage(data: SubmitData) {
-  try {
-    const record = { ...contentDataRef.value, label: data.label, id: '' }
-    const result = await management.recordRecentUsage(record)
-    recentUsageCache.value.splice(0, 0, result)
-    recentUsageCache.value = uniqBy(
-      recentUsageCache.value,
-      (item) => `${item.name}+${item.role}+${item.style}+${item.speed}+${item.pitch}`,
-    )
-  } catch (error) {
-    emitter.emit('error', error)
-  }
-}
-
-function handleRecentUsageItemClick(item: RecentUsageSpeaker) {
-  contentDataRef.value.category = item.category
-  contentDataRef.value.name = item.name
-  contentDataRef.value.pitch = item.pitch
-  contentDataRef.value.role = item.role
-  contentDataRef.value.speed = item.speed
-  contentDataRef.value.style = item.style
-
-  handleSubmit(item.label)
-}
-
-async function handleRecentUsageClose(index: number) {
-  try {
-    const item = recentUsageCache.value[index]
-    await management.deleteRecentUsage(item.id)
-    recentUsageCache.value.splice(index, 1)
-  } catch (error) {
-    emitter.emit('error', error)
-  }
-}
-
-async function handleRecentUsageClean() {
-  try {
-    await management.deleteRecentUsage()
-    recentUsageCache.value = []
-  } catch (error) {
-    emitter.emit('error', error)
-  }
-}
 </script>
 
 <template>
-  <div ref="boxRef" style="width: 600px; height: 360px" class="position-relative px-2 pb-2">
+  <div ref="boxRef" style="height: 360px" class="position-relative px-2 pb-2">
     <ElForm @submit.prevent="handleSelectCategory('')">
       <ElInput v-model="searchInput" placeholder="请输入名称快速查找配音师"></ElInput>
     </ElForm>
     <div class="position-relative">
-      <div class="position-absolute top-0 end-0">
-        <ElButton size="small" :icon="More" @click="() => (showMore = !showMore)"></ElButton>
-      </div>
-      <ul
-        class="d-flex flex-row row-gap-1 column-gap-2 overflow-x-hidden"
-        :class="{ 'flex-wrap': showMore }"
-      >
-        <li><span class="text-nowrap">近期使用:</span></li>
-        <li
-          class="btn m-0 p-0"
-          v-for="(item, index) in recentUsageCache"
-          @click="handleRecentUsageItemClick(item)"
-          :key="index"
-        >
-          <ElTag type="info" @close="handleRecentUsageClose(index)" closable>
-            {{ item.label }}
-          </ElTag>
-        </li>
-      </ul>
       <div v-show="!showMore" :class="{ 'd-flex flex-row': !showMore }">
-        <SelectList
+        <!-- <SelectList
           @update:modelValue="handleSelectCategory"
           v-model="contentDataRef.category"
           :dataList="dataListCategory"
         >
           <span class="my-3">类型</span>
-        </SelectList>
+        </SelectList> -->
         <SelectList
           @update:modelValue="handleSelectSpeaker"
           :modelValue="contentDataRef.name"
@@ -229,10 +154,10 @@ async function handleRecentUsageClean() {
           <span class="my-3">配音师</span>
         </SelectList>
         <SelectList v-model="contentDataRef.role" :dataList="dataListRole">
-          <span class="my-3">角色</span>
+          <span class="my-3">角色风格</span>
         </SelectList>
         <SelectList v-model="contentDataRef.style" :dataList="dataListStyle">
-          <span class="my-3">风格</span>
+          <span class="my-3">说话风格</span>
         </SelectList>
         <SelectList v-model="contentDataRef.speed" :dataList="dataListSpeed">
           <span class="my-3">语速</span>
@@ -244,8 +169,7 @@ async function handleRecentUsageClean() {
     </div>
 
     <div class="position-absolute bottom-0 end-0 d-flex flex-row justify-content-end me-4 mb-3">
-      <ElButton v-show="!showMore" @click="() => handleSubmit()" type="primary">确定</ElButton>
-      <ElButton v-show="showMore" @click="handleRecentUsageClean" type="primary">全部清空</ElButton>
+      <ElButton  @click="() => handleSubmit()" type="primary">确定</ElButton>
     </div>
   </div>
 </template>

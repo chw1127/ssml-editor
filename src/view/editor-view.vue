@@ -4,9 +4,61 @@ import EditorCore from './editor-core.vue'
 import EditorBar from './editor-bar.vue'
 import { type IDomEditor } from '@wangeditor/editor'
 import { emitter } from '@/event-bus'
-import { ref, provide } from 'vue'
+import { ref, provide, watch, nextTick } from 'vue'
+import { serializeToSSML } from '@/serialize'
+import { debounce } from 'lodash';
+import xmlFormat from 'xml-formatter'
+const props = withDefaults(
+    defineProps<{
+        data?: string,
+        ssml: string
+    }>(),
+    {
+      data: ``,
+        ssml: ''
+    }
+)
 
-const emit = defineEmits<{ created: [editor: IDomEditor]; change: [editor: IDomEditor] }>()
+
+const flag = ref<boolean>(true)
+
+const ssmlData = ref(props.ssml);
+const sData = ref(props.data);
+watch(
+  sData,
+    debounce((newValue: string) => {
+        emit('update:data', newValue);
+    }, 200)
+);
+
+watch(
+  ssmlData,
+    debounce((newValue: string) => {
+        emit('update:ssml', newValue);
+    }, 200)
+);
+
+
+watch(() => props.data, (newValue) => {
+    if (newValue != sData.value) {
+      flag.value = false
+      console.log("外部数据有更新");
+      nextTick(() => {
+        flag.value = true
+      })
+    }
+});
+
+
+
+
+const emit = defineEmits<{
+  (event: 'created', data: IDomEditor): void;
+  // (event: 'change', data: IDomEditor): void;
+  // (event: 'ssmlChange', data: string): void;
+  (event: 'update:ssml', value: string): void;
+  (event: 'update:data', value: string): void
+}>();
 
 const boxRef = ref<HTMLDivElement>()
 
@@ -18,7 +70,8 @@ function handleCreated(editor: IDomEditor) {
 }
 
 function handleChange(editor: IDomEditor) {
-  emit('change', editor)
+  ssmlData.value=ssmlFormat();
+  sData.value=editor.getHtml();
 }
 
 function handleClick(ev: MouseEvent) {
@@ -28,36 +81,43 @@ function handleClick(ev: MouseEvent) {
 function handleKeyDown(ev: KeyboardEvent) {
   emitter.emit('view-keydown', ev)
 }
+
+const ssmlFormat = () => {
+  let ssml=serializeToSSML();
+  // console.log("ssml:",ssml);
+  let format_ssml= xmlFormat(ssml, {
+    indentation: '    ',
+    filter: (node) => node.type !== 'Comment',
+    collapseContent: true,
+    lineSeparator: '\n',
+  })
+  // console.log(format_ssml);
+  return format_ssml
+}
 </script>
 
 <template>
   <div
     ref="boxRef"
-    class="ssml-editor-root editor-view"
+    class="ssml-editor-root ssml-editor-view"
     @click="handleClick"
     @keydown="handleKeyDown"
   >
-    <slot><EditorTitle></EditorTitle></slot>
-    <div class="editor-box">
+    <div class="editor-box" v-if="flag">
+      <EditorTitle></EditorTitle>
       <EditorBar></EditorBar>
-      <div class="editor-core-container shadow pt-1">
-        <EditorCore @change="handleChange" @created="handleCreated"></EditorCore>
+      <div class="editor-core-container border pt-1">
+        <EditorCore @change="handleChange" @created="handleCreated" :html="data"></EditorCore>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.editor-view {
+.ssml-editor-view {
   background-color: var(--tool-bg-color);
-
   .editor-box {
     background-color: var(--tool-bg-grey-color);
-
-    .editor-core-container {
-      margin: 0 auto;
-      width: 60vw;
-    }
   }
 }
 </style>

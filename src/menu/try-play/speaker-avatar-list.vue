@@ -52,21 +52,25 @@ async function handleFetchData() {
   } catch (error) {
     emitter.emit('error', error)
   }
-  dataList.value = speaderCache.value.map<SpeakerAvatarData>((v) => ({
+  dataList.value = speaderCache.value.map<SpeakerAvatarData>((v) => ({ 
     label: v.displayName,
     value: v.name,
     avatar: v.avatar,
     isFree: v.isFree,
+    gender:v.gender,
+    localeZH:v.localeZH
   }))
+
+  console.log("dataList.value:",dataList.value);
 }
 </script>
 
 <template>
   <div
-    style="height: 170px"
+    style="height: 300px"
     class="w-100 d-flex flex-row flex-wrap justify-content-start overflow-x-hidden overflow-y-auto scrollbar-none"
   >
-    <div class="m-3" v-for="(item, index) in dataList" :key="index">
+    <div class="m-1" v-for="(item, index) in dataList" :key="index">
       <SpeakerAvatar
         :data="item"
         :activate="item.value === tryPlayStore.speaker.name"

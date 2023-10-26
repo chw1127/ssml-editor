@@ -27,7 +27,7 @@
 
   .remark {
     position: absolute;
-    top: -18px;
+    top: -23px;
     left: 0px;
 
     display: inline-flex;
@@ -39,11 +39,11 @@
     margin: 0;
 
     line-height: normal;
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     border-radius: 3px;
 
     color: white;
-    height: 18px;
+    height: 22px;
     max-width: 150px;
     white-space: nowrap;
     transition: all 0.1s ease;
@@ -63,8 +63,9 @@
     .iconfont {
       color: #e2fafa;
       opacity: 0.6;
-      font-size: 0.5rem;
+      font-size: 0.8rem;
       transition: all 0.1s ease;
+      margin-right: 2px;
 
       &:hover {
         cursor: pointer;

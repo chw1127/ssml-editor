@@ -29,6 +29,7 @@ async function handleClick(editor: IDomEditor) {
   if (fn.value.isDisabled()) return
   const text = fn.value.getValue()
   if (text) {
+    console.log("选中的单词:",text);
     try {
       englishList.value = await ssmlEditorConfig.english.fetchData(text)
     } catch (error) {

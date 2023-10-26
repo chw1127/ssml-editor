@@ -2,11 +2,11 @@ import type { FilterSpeaker, LabelValue } from '@/model'
 import type { IEditorConfig } from '@wangeditor/editor'
 import type { FilterBarSearch } from '@/components/bar-search'
 import type { Speaker } from '@/model'
-import { defaultAudioInfo, type AudioInfo } from '@/menu/conversion-menu/data'
+import {type AudioInfo } from '@/menu/conversion-menu/data'
 import type { CancellationToken } from '@/utils'
-import { defaultRecentUsageSpeaker, type RecentUsageSpeaker } from '@/menu/management-menu/data'
 import { emitter } from '@/event-bus'
 import mergeWith from 'lodash.mergewith'
+import defaultSSMLEditorConfig from '@/default_config'
 
 type Effects = { zoom: boolean; grayscale: boolean }
 type FetchFunction = () => Promise<LabelValue[]>
@@ -23,8 +23,7 @@ export type PartialSSMLEditorConfig = Partial<Omit<SSMLEditorConfig, PartialKey>
 export interface SSMLEditorConfig {
   effects: Effects
   editorConfig: Partial<IEditorConfig> & {
-    saveHtml?: (htmlGetter: () => string) => Promise<boolean>
-    readHtml?: () => Promise<string | null>
+    placeholder:string
   }
   handleWarn: (message: string) => void
   handleError: (error: unknown) => void
@@ -45,7 +44,6 @@ export interface SSMLEditorConfig {
   tryPlay: {
     play: (ssmlGetter: () => string) => Promise<AudioInfo>
     gender: LabelValue[]
-    topFlag: LabelValue[]
     category: LabelValue[]
     fetchData: FilterSpeakerFetchFunction
     featchTag: FetchFunction
@@ -59,82 +57,69 @@ export interface SSMLEditorConfig {
     fetchSpeaker: () => Promise<Speaker[]>
   }
   management: {
-    recordRecentUsage: (recentUsage: RecentUsageSpeaker) => Promise<RecentUsageSpeaker>
-    fetchRecentUsage: () => Promise<RecentUsageSpeaker[]>
-    deleteRecentUsage: (id?: string) => Promise<void>
+    
   }
 }
 
-function resolveList() {
-  return () => Promise.resolve([])
-}
+// function resolveList() {
+//   return () => Promise.resolve([])
+// }
 
-function defaultSSMLEditorConfig(): SSMLEditorConfig {
-  return {
-    effects: { zoom: true, grayscale: true },
-    editorConfig: { placeholder: '请输入内容...' },
-    handleWarn: (message) => console.warn(message),
-    handleError: (error) => console.error(error),
-    pinyin: {},
-    english: { fetchData: resolveList() },
-    bgm: {
-      menus: [
-        { label: '默认音效', value: '' },
-        { label: '自定义音效', value: 'custom' },
-        { label: '最近音效', value: 'history' },
-      ],
-      fetchScene: resolveList(),
-      fetchStyle: resolveList(),
-      fetchData: resolveList(),
-    },
-    special: {
-      menus: [
-        { label: '默认音效', value: '' },
-        { label: '自定义音效', value: 'custom' },
-        { label: '最近音效', value: 'history' },
-      ],
-      fetchScene: resolveList(),
-      fetchStyle: resolveList(),
-      fetchData: resolveList(),
-    },
-    conversion: {
-      timeoutMilliseconds: 20000,
-      audioUpload: () => Promise.resolve(defaultAudioInfo()),
-      transfer: () => Promise.resolve(defaultAudioInfo()),
-      fetchSpeaker: resolveList(),
-    },
-    management: {
-      recordRecentUsage: () => Promise.resolve<RecentUsageSpeaker>(defaultRecentUsageSpeaker()),
-      fetchRecentUsage: resolveList(),
-      deleteRecentUsage: () => Promise.resolve(),
-    },
-    tryPlay: {
-      play: () => Promise.resolve(defaultAudioInfo()),
-      fetchData: resolveList(),
-      featchTag: resolveList(),
-      fetchStar: () => Promise.resolve(true),
-      gender: [
-        { label: '全部', value: '' },
-        { label: '男声', value: 'Male' },
-        { label: '女声', value: 'Female' },
-      ],
-      topFlag: [
-        { label: '热榜', value: '' },
-        { label: 'SVIP', value: 'SVIP' },
-        { label: '付费', value: '付费' },
-      ],
-      category: [
-        { label: '常用', value: '常用' },
-        { label: '已购', value: '已购' },
-        { label: '收藏', value: '收藏' },
-        { label: '我的', value: '我的' },
-      ],
-    },
-  }
-}
+// function defaultSSMLEditorConfig(): SSMLEditorConfig {
+//   return {
+//     effects: { zoom: true, grayscale: true },
+//     editorConfig: { placeholder: '请输入内容...' },
+//     handleWarn: (message) => console.warn(message) ,
+//     handleError: (error) => console.error(error),
+//     pinyin: {},
+//     english: { fetchData: resolveList() },
+//     bgm: {
+//       menus: [
+//         { label: '默认音效', value: '' }
+//       ],
+//       fetchScene: resolveList(),
+//       fetchStyle: resolveList(),
+//       fetchData: resolveList(),
+//     },
+//     special: {
+//       menus: [
+//         { label: '默认音效', value: '' }
+//       ],
+//       fetchScene: resolveList(),
+//       fetchStyle: resolveList(),
+//       fetchData: resolveList(),
+//     },
+//     conversion: {
+//       timeoutMilliseconds: 20000,
+//       audioUpload: () => Promise.resolve(defaultAudioInfo()),
+//       transfer: () => Promise.resolve(defaultAudioInfo()),
+//       fetchSpeaker: resolveList(),
+//     },
+//     management: {
+      
+//     },
+//     tryPlay: {
+//       play: () => Promise.resolve(defaultAudioInfo()),
+//       fetchData: resolveList(),
+//       featchTag: resolveList(),
+//       fetchStar: () => Promise.resolve(true),
+//       gender: [
+//         { label: '全部', value: '' },
+//         { label: '男声', value: 'Male' },
+//         { label: '女声', value: 'Female' },
+//       ],
+//       category: [
+//         { label: '常用', value: '常用' },
+//         { label: '已购', value: '已购' },
+//         { label: '收藏', value: '收藏' },
+//         { label: '我的', value: '我的' },
+//       ],
+//     },
+//   }
+// }
 
 function mergeSSMLEditorConfig(config?: PartialSSMLEditorConfig): SSMLEditorConfig {
-  const defaultConfig = defaultSSMLEditorConfig()
+  const defaultConfig = defaultSSMLEditorConfig();
   return mergeWith(defaultConfig, config, (objValue, srcValue) => {
     if (Array.isArray(objValue) && Array.isArray(srcValue)) return srcValue
   })

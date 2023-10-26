@@ -20,7 +20,7 @@ import {
 </script>
 
 <template>
-  <div class="editor-bar border-bottom">
+  <div class="editor-bar">
     <BarWrapper>
       <BarWrapperMenus>
         <PlayMenu></PlayMenu>

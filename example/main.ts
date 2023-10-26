@@ -8,5 +8,5 @@ import EditorConfig from './config'
 import SSMLEditor from '@/index'
 
 const app = createApp(App)
-app.use(SSMLEditor, EditorConfig)
+app.use(SSMLEditor,EditorConfig)
 app.mount('#app')

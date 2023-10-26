@@ -3,6 +3,8 @@ import type { LabelValue } from '@/model'
 export interface SpeakerAvatarData extends LabelValue {
   avatar?: string
   isFree?: boolean
+  gender?:string,
+  localeZH:string
 }
 
 export interface StyleAvatarData extends LabelValue {
