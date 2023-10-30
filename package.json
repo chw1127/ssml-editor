@@ -1,6 +1,6 @@
 {
   "name": "@sw7d/ssml-editor",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "private": false,
   "description": "基于wangeditor+实现的支持SSML语法的编辑器",
   "keywords": [
@@ -8,10 +8,10 @@
     "editor",
     "编辑器"
   ],
-  "homepage": "https://github.com/sw7d/ssml-editor/",
+  "homepage": "https://github.com/chw1127/ssml-editor/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sw7d/ssml-editor.git"
+    "url": "git+https://github.com/chw1127/ssml-editor.git"
   },
   "license": "Apache-2.0",
   "author": "sw7d <sw7d@qq.com>",
