@@ -50,7 +50,8 @@ function initEditor() {
         emitter.emit('editor-created', editor)
         emit('created', editor)
         ssmlEditorConfig.editorConfig.onCreated?.(editor)
-        // initEditorHtml(editor)
+        initEditorHtml(editor)
+        
       },
       onChange(editor) {
         emit('change', editor)
@@ -74,21 +75,23 @@ function initEffects() {
   }
 }
 
-// async function initEditorHtml(editor: IDomEditor) {
-//   // const readHtml = ssmlEditorConfig.editorConfig.readHtml
-//   // if (readHtml) {
-//   //   const html = await readHtml()
-//   //   html && editor.setHtml(html)
-//   //   await sleep(500)
-//   //   editor.focus(true)
-//   // }
+async function initEditorHtml(editor: IDomEditor) {
+  // const readHtml = ssmlEditorConfig.editorConfig.readHtml
+  // if (readHtml) {
+  //   const html = await readHtml()
+  //   html && editor.setHtml(html)
+  //   await sleep(500)
+  //   editor.focus(true)
+  // }
 
-//   const html = props.html;
-//   // editor.clear();
-//   editor.setHtml(html);
-//   // await sleep(500)
-//   // editor.focus(true)
-// }
+  // const html = props.html;
+  // editor.clear();
+  // editor.setHtml(html);
+  // await sleep(500)
+  // editor.focus(true)
+  editor.focus(true); // 选区定位到最后
+  editor.blur() //失焦编辑器
+}
 </script>
 
 <template>

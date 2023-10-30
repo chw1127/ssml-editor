@@ -11,11 +11,13 @@ import xmlFormat from 'xml-formatter'
 const props = withDefaults(
     defineProps<{
         data?: string,
-        ssml: string
+        ssml: string,
+        simpleModel:boolean
     }>(),
     {
       data: ``,
-        ssml: ''
+      ssml: '',
+      simpleModel:false
     }
 )
 
@@ -105,7 +107,7 @@ const ssmlFormat = () => {
   >
     <div class="editor-box" v-if="flag">
       <EditorTitle></EditorTitle>
-      <EditorBar></EditorBar>
+      <EditorBar :simple-model="simpleModel"></EditorBar>
       <div class="editor-core-container border pt-1">
         <EditorCore @change="handleChange" @created="handleCreated" :html="data"></EditorCore>
       </div>

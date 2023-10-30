@@ -22,7 +22,7 @@
 1.安装插件
 
 ```sh
-yarn add @mekumiao/ssml-editor
+yarn add @sw7d/ssml-editor
 ```
 
 2.使用
@@ -33,9 +33,9 @@ yarn add @mekumiao/ssml-editor
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import '@mekumiao/ssml-editor/dist/style.css'
+import '@sw7d/ssml-editor/dist/style.css'
 
-import SSMLEditor from '@mekumiao/ssml-editor'
+import SSMLEditor from '@sw7d/ssml-editor'
 
 const app = createApp(App)
 app.use(SSMLEditor)
@@ -46,7 +46,7 @@ app.mount('#app')
 
 ```vue
 <script setup lang="ts">
-import { EditorView } from '@mekumiao/ssml-editor'
+import { EditorView } from '@sw7d/ssml-editor'
 </script>
 
 <template>

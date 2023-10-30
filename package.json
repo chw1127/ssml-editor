@@ -1,20 +1,20 @@
 {
-  "name": "@mekumiao/ssml-editor",
-  "version": "2.0.3",
+  "name": "@sw7d/ssml-editor",
+  "version": "2.0.5",
   "private": false,
-  "description": "基于wangeditor实现的支持SSML语法的编辑器",
+  "description": "基于wangeditor+实现的支持SSML语法的编辑器",
   "keywords": [
     "SSML",
     "editor",
     "编辑器"
   ],
-  "homepage": "https://github.com/mekumiao/ssml-editor/",
+  "homepage": "https://github.com/sw7d/ssml-editor/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mekumiao/ssml-editor.git"
+    "url": "git+https://github.com/sw7d/ssml-editor.git"
   },
   "license": "Apache-2.0",
-  "author": "mekumiao <btguigushi@qq.com>",
+  "author": "sw7d <sw7d@qq.com>",
   "type": "module",
   "exports": {
     ".": {

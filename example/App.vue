@@ -57,7 +57,7 @@ const onClick2=()=>{
   </div> -->
   <div> <ElButton  @click="onClick1" type="primary">确定A</ElButton> <ElButton  @click="onClick2" type="primary">确定B</ElButton></div>
   <div class="editor" v-if="flag">
-    <SSMLEditorView @created="handleCreate" @change="onChange" @ssml-change="ssmlChange" v-model:data="node.data" v-model:ssml="node.ssml" ref="editor"></SSMLEditorView>
+    <SSMLEditorView @created="handleCreate" @change="onChange" @ssml-change="ssmlChange" v-model:data="node.data" v-model:ssml="node.ssml" :simple-model="false" ref="editor"></SSMLEditorView>
   </div>
   
   <textarea v-model="node.ssml"></textarea>

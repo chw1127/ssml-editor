@@ -36,7 +36,7 @@ function handleSubmit(text: string | null) {
 <template>
   <BarPopover v-model:visible="visible" :width="200">
     <template #reference>
-      <BarButton icon="mute" @click="handleClick">插入静音</BarButton>
+      <BarButton icon="mute" @click="handleClick">静音</BarButton>
     </template>
     <div class="d-flex flex-column">
       <div

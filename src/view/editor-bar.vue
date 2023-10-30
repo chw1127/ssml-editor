@@ -17,6 +17,16 @@ import {
   ManagementMenu,
   TryPlay,
 } from '../menu'
+
+ withDefaults(
+    defineProps<{
+        simpleModel:boolean
+    }>(),
+    {
+      simpleModel:false
+    }
+)
+
 </script>
 
 <template>
@@ -27,22 +37,23 @@ import {
       </BarWrapperMenus>
       <BarWrapperMenus>
         <PinyinMenu></PinyinMenu>
-        <ReadMenu></ReadMenu>
-        <DigitalMenu></DigitalMenu>
-        <ContinuousMenu></ContinuousMenu>
-        <AliasMenu></AliasMenu>
-        <EnglishMenu></EnglishMenu>
+        <MuteMenu></MuteMenu>
+        
       </BarWrapperMenus>
-      <BarWrapperMenus>
+      <BarWrapperMenus v-if="!simpleModel">
         <ChangespeedMenu></ChangespeedMenu>
         <ManagementMenu></ManagementMenu>
         <ConversionMenu></ConversionMenu>
       </BarWrapperMenus>
-      <BarWrapperMenus>
+      <BarWrapperMenus  v-if="!simpleModel">
+        <DigitalMenu></DigitalMenu>
+        <ReadMenu></ReadMenu>
         <RhythmMenu></RhythmMenu>
-        <MuteMenu></MuteMenu>
+        <ContinuousMenu></ContinuousMenu>
+        <AliasMenu></AliasMenu>
+        <EnglishMenu></EnglishMenu>
       </BarWrapperMenus>
-      <BarWrapperMenus>
+      <BarWrapperMenus  v-if="!simpleModel">
         <SpecialMenu></SpecialMenu>
         <BgmMenu></BgmMenu>
       </BarWrapperMenus>
