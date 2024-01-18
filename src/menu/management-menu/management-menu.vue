@@ -9,7 +9,6 @@ import { ManagementFn } from './management-fn'
 import { getEmitter } from '@/core/emitter'
 import type { SSMLBaseElement } from '@/core/base'
 import { useEditorStore } from '@/stores'
-
 const dragRef = ref<InstanceType<typeof DragBox>>()
 const menuRef = ref()
 const visible = ref(false)
@@ -67,7 +66,7 @@ function handleSubmit(opt: SubmitData) {
 <template>
   <DragBox ref="dragRef" v-model:visible="visible">
     <template #reference>
-      <BarButton ref="menuRef" icon="management" @click="handleClick">多人配音</BarButton>
+      <BarButton ref="menuRef" icon="management" @click="handleClick">多人</BarButton>
     </template>
     <ManagementContent @submit="handleSubmit" :contentData="contentData"></ManagementContent>
   </DragBox>

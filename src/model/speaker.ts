@@ -17,18 +17,18 @@ export interface Speaker {
 
 export function defaultSpeaker(): Speaker {
   return {
-    id: '',
+    id: 'zh-CN-XiaoxiaoNeural',
     category: '',
     avatar: '',
     isFree: false,
     isStar: false,
     isSupper24K: false,
-    gender:'',
-    localeZH:'',
+    gender:"Female",
+    localeZH:"中文(普通话，简体)",
     roles: [],
     styles: [],
-    name: '',
-    displayName: '',
+    name: "zh-CN-XiaoxiaoNeural",
+    displayName: "晓晓",
   }
 }
 

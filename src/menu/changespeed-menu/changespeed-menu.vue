@@ -34,16 +34,16 @@ function handleItemClick(item: LabelValue) {
 <template>
   <BarPopover v-model:visible="visible">
     <template #reference>
-      <BarButton icon="changespeed" @click="handleClick">局部变速</BarButton>
+      <BarButton icon="changespeed" @click="handleClick">变速</BarButton>
     </template>
     <div
-      class="d-flex flex-column overflow-x-hidden overflow-y-scroll scrollbar"
+      class="speed-list d-flex flex-column overflow-x-hidden overflow-y-scroll scrollbar"
       style="height: 15rem"
     >
       <div
         v-for="(item, index) in rates"
         :key="index"
-        class="clickable w-100 fs-6 rounded-1 px-3 py-2"
+        class="item"
         @click="handleItemClick(item)"
       >
         {{ item.label }}
@@ -52,4 +52,17 @@ function handleItemClick(item: LabelValue) {
   </BarPopover>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .speed-list{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:15rem;
+    .item{
+      padding:2px 4px;
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+</style>

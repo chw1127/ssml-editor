@@ -28,7 +28,7 @@ function handleItemClick(item: LabelValue) {
 <template>
   <BarPopover v-model:visible="visible">
     <template #reference>
-      <BarButton icon="digital" @click="handleClick">数字符号</BarButton>
+      <BarButton icon="digital" @click="handleClick">数字</BarButton>
     </template>
     <div class="d-flex flex-column">
       <div

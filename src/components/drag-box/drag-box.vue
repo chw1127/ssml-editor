@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useDraggable } from '@vueuse/core'
-import { onMounted, onUnmounted, ref, inject, type Ref } from 'vue'
+import { onMounted, onUnmounted, ref,  watch } from 'vue'
 import { type Position } from '@vueuse/core'
-import { useConstrainDragBounds } from './constrain-drag-bounds'
+// import { useConstrainDragBounds } from './constrain-drag-bounds'
 import { emitter } from '@/event-bus'
 
+import {ElDialog } from 'element-plus'
 const emit = defineEmits<{ 'update:visible': [value: boolean]; close: [] }>()
 const props = defineProps<{
   visible: boolean
@@ -14,11 +15,11 @@ const props = defineProps<{
 const boxRef = ref<HTMLElement>()
 const dragRef = ref<HTMLElement>()
 const referenceRef = ref<HTMLElement>()
-const dragContainerBoxRef = inject<Ref<HTMLElement | undefined>>('dragContainerBox')
+// const dragContainerBoxRef = inject<Ref<HTMLElement | undefined>>('dragContainerBox')
 const allowClose = ref(true)
 
 const { position } = useDraggable(dragRef, { initialValue: props.initialValue })
-const { style } = useConstrainDragBounds(boxRef, dragContainerBoxRef, position)
+// const { style } = useConstrainDragBounds(boxRef, dragContainerBoxRef, position)
 
 function setPosition(opt: Position) {
   position.value = opt
@@ -64,6 +65,16 @@ function handleClose() {
   emit('update:visible', false)
   emit('close')
 }
+let showDialog=ref(false)
+watch(() => props.visible, (newVal) => {
+  showDialog.value=newVal
+})
+
+watch(() => showDialog.value, (newVal) => {
+  if(!newVal){
+    handleClose();
+  }
+})
 
 function handleKeyDownEsc(event: KeyboardEvent) {
   event.code === 'Escape' && handleClose()
@@ -75,21 +86,39 @@ function handleKeyDownEsc(event: KeyboardEvent) {
     <slot name="reference"></slot>
   </div>
   <Teleport to="body">
-    <div
+    <ElDialog v-model="showDialog" title="选择角色" :draggable="true" width="60%" align-center>
+      <slot></slot>
+    </ElDialog>
+    <!-- <div
       v-show="visible"
       ref="boxRef"
-      class="ssml-editor-root card shadow brag-box user-select-none z-2"
+      class="drag-box"
       style="position: fixed"
       :style="style"
       @mousedown.prevent
     >
-      <div class="w-100 d-flex flex-row align-items-center">
-        <div ref="dragRef" class="w-100" style="height: 40px; cursor: move"></div>
+      <div class="header">
+        <div ref="dragRef" style="flex:1; height: 40px; cursor: move"></div>
         <span @click="handleClose" class="btn iconfont icon-close fs-5"></span>
       </div>
       <slot></slot>
-    </div>
+    </div> -->
   </Teleport>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.drag-box {
+  background-color: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 5px 5px -4px rgba(0, 0, 0, .5);
+  z-index: 2;
+  padding:2px 5px;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+}
+</style>

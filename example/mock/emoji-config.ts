@@ -53,6 +53,7 @@ const roleDes = [
   { keyword: 'Boy', emoji: '👦', word: '男孩' },
   { keyword: 'Narrator', emoji: '🔊', word: '旁白' },
   { keyword: 'Default', emoji: '', word: '默认' },
+  { keyword: '', emoji: '', word: '默认' },
 ]
 const getStyleDes = (key: string) => {
   return styleDes.find((item) => item.keyword === key)

@@ -62,13 +62,13 @@ function handleItemClick(item: LabelValue) {
     </template>
     <div
       class="ssml-editor-root d-flex flex-column overflow-x-hidden overflow-y-auto p-2 scrollbar"
-      style="max-height: 300px"
+      style="max-height: 300px;overflow-y: auto;overflow-x: hidden;display: flex;flex-direction: column;"
       @mousedown.stop.prevent
     >
       <div
         v-for="(item, index) in pyList"
         :key="index"
-        class="clickable w-100 fs-6 rounded-1 px-3 py-2"
+        style="padding: 2px 5px;border-bottom: 1px solid #eee;"
         @click="handleItemClick(item)"
       >
         {{ item.label }}

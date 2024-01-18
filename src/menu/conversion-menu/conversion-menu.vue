@@ -40,7 +40,7 @@ function handleMenuSubmit(opt: LabelValue) {
 <template>
   <DragBox ref="dragRef" v-model:visible="visible">
     <template #reference>
-      <BarButton ref="menuRef" icon="conversion" @click="handleClick">局部变音</BarButton>
+      <BarButton ref="menuRef" icon="conversion" @click="handleClick">变音</BarButton>
     </template>
     <ConversionContent :text="text" @submit="handleMenuSubmit"></ConversionContent>
   </DragBox>

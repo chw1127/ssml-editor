@@ -34,7 +34,7 @@ function handleItemClick(item: LabelValue) {
 <template>
   <BarPopover v-model:visible="visible">
     <template #reference>
-      <BarButton icon="rhythm" @click="handleClick">停顿调节</BarButton>
+      <BarButton icon="rhythm" @click="handleClick">停顿</BarButton>
     </template>
     <div class="d-flex flex-column">
       <div

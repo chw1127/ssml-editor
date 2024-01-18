@@ -8,6 +8,9 @@ import { ref, provide, watch, nextTick } from 'vue'
 import { serializeToSSML } from '@/serialize'
 import { debounce } from 'lodash';
 import xmlFormat from 'xml-formatter'
+import {
+  TryPlay,
+} from '../menu'
 const props = withDefaults(
     defineProps<{
         data?: string,
@@ -56,8 +59,8 @@ watch(() => props.data, (newValue) => {
 
 const emit = defineEmits<{
   (event: 'created', data: IDomEditor): void;
-  // (event: 'change', data: IDomEditor): void;
-  // (event: 'ssmlChange', data: string): void;
+  (event: 'change', data: string): void;
+  (event: 'ssmlChange', data: string): void;
   (event: 'update:ssml', value: string): void;
   (event: 'update:data', value: string): void
 }>();
@@ -74,6 +77,8 @@ function handleCreated(editor: IDomEditor) {
 function handleChange(editor: IDomEditor) {
   ssmlData.value=ssmlFormat();
   sData.value=editor.getHtml();
+  emit('change', sData.value)
+  emit('ssmlChange', ssmlData.value)
 }
 
 function handleClick(ev: MouseEvent) {
@@ -96,6 +101,10 @@ const ssmlFormat = () => {
   // console.log(format_ssml);
   return format_ssml
 }
+
+emitter.on('tryplay-speaker-select', (speaker) => {
+  console.log("tryplay-speaker-select:",speaker);
+})
 </script>
 
 <template>
@@ -110,9 +119,12 @@ const ssmlFormat = () => {
       <EditorBar :simple-model="simpleModel"></EditorBar>
       <div class="editor-core-container border pt-1">
         <EditorCore @change="handleChange" @created="handleCreated" :html="data"></EditorCore>
+        <TryPlay></TryPlay>
       </div>
+      
     </div>
   </div>
+  
 </template>
 
 <style lang="scss" scoped>
@@ -121,5 +133,10 @@ const ssmlFormat = () => {
   .editor-box {
     background-color: var(--tool-bg-grey-color);
   }
+}
+.editor-core-container{
+  display: flex;
+  flex-direction: column;
+  border:1px solid #eee;
 }
 </style>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { SSMLEditorView } from '@/view'
 import type { IDomEditor } from '@wangeditor/editor'
-import {ref } from 'vue';
+import {nextTick, ref } from 'vue';
 import {ElButton } from 'element-plus'
 
 function handleCreate(editor: IDomEditor) {
   window.editor = editor
 }
 
-const onChange=(editor: IDomEditor)=>{
-  console.log("html:",editor.getHtml())
+const onChange=(editor: string)=>{
+  console.log("html:",editor)
 }
 
 const ssmlChange=(ssml: string)=>{
@@ -46,6 +46,14 @@ const onClick2=()=>{
   // })
 }
 
+const onClick3=()=>{
+  flag.value = false
+  nextTick(() => {
+    flag.value = true
+  })
+}
+
+
 </script>
 
 <template>
@@ -55,9 +63,13 @@ const onClick2=()=>{
       <EditorView @created="handleCreate"></EditorView>
     </div>
   </div> -->
-  <div> <ElButton  @click="onClick1" type="primary">确定A</ElButton> <ElButton  @click="onClick2" type="primary">确定B</ElButton></div>
+  <div> <ElButton  @click="onClick1" type="primary">确定A</ElButton> 
+    <ElButton  @click="onClick2" type="primary">确定B</ElButton>
+    <ElButton  @click="onClick3" type="primary">重载</ElButton>
+  </div>
+
   <div class="editor" v-if="flag">
-    <SSMLEditorView @created="handleCreate" @change="onChange" @ssml-change="ssmlChange" v-model:data="node.data" v-model:ssml="node.ssml" :simple-model="false" ref="editor"></SSMLEditorView>
+    <SSMLEditorView @created="handleCreate" @change="onChange" @ssml-change="ssmlChange" :data="node.data" :ssml="node.ssml" :simple-model="true" ref="editor"></SSMLEditorView>
   </div>
   
   <textarea v-model="node.ssml"></textarea>
@@ -65,5 +77,5 @@ const onClick2=()=>{
 </template>
 
 <style scoped>
-.editor{width: 80%;margin: 0 auto;margin-bottom: 20px;}
+.editor{width: 80%;margin: 0 auto;margin-bottom: 20px; width: 234px;}
 </style>

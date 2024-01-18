@@ -27,8 +27,8 @@ function handleTagsClick(value: string) {
 </script>
 
 <template>
-  <div class="tag-list w-100">
-    <div class="d-flex flex-row border-bottom border-secondary align-items-center py-2">
+  <div class="tag-list">
+    <div class="group">
       <SimpleTag
         @click="handleGenderClick"
         v-for="(item, index) in gender"
@@ -40,7 +40,7 @@ function handleTagsClick(value: string) {
       </SimpleTag>
     </div>
     <div
-      class="w-100 pt-2 py-2  d-flex flex-row flex-wrap overflow-y-auto overflow-x-hidden scrollbar-none"
+      class="group"
     >
       <SimpleTag
         @click="handleTagsClick"
@@ -55,4 +55,12 @@ function handleTagsClick(value: string) {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tag-list{
+  .group{
+    display: flex;
+    flex-direction: row;
+    padding:5px 0;
+  }
+}
+</style>

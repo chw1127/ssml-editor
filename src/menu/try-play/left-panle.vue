@@ -12,9 +12,11 @@ const filter = ref<FilterSpeaker>(defaultFilterSpeaker())
 <template>
   <div class="left-panle" ref="boxRef">
     <SimpleTagList v-model:filter="filter"></SimpleTagList>
-    <div class="py-1 border-top border-secondary"></div>
     <SpeakerAvatarList :filter="filter"></SpeakerAvatarList>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.left-panle{
+}
+</style>

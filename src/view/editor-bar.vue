@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BarWrapper, BarWrapperMenus } from '../components'
 import {
   PlayMenu,
   PinyinMenu,
@@ -14,52 +13,45 @@ import {
   MuteMenu,
   BgmMenu,
   ConversionMenu,
-  ManagementMenu,
-  TryPlay,
+  ManagementMenu
 } from '../menu'
 
- withDefaults(
-    defineProps<{
-        simpleModel:boolean
-    }>(),
-    {
-      simpleModel:false
-    }
+withDefaults(
+  defineProps<{
+    simpleModel: boolean
+  }>(),
+  {
+    simpleModel: false
+  }
 )
 
 </script>
 
 <template>
   <div class="editor-bar">
-    <BarWrapper>
-      <BarWrapperMenus>
-        <PlayMenu></PlayMenu>
-      </BarWrapperMenus>
-      <BarWrapperMenus>
-        <PinyinMenu></PinyinMenu>
-        <MuteMenu></MuteMenu>
-        
-      </BarWrapperMenus>
-      <BarWrapperMenus v-if="!simpleModel">
-        <ChangespeedMenu></ChangespeedMenu>
-        <ManagementMenu></ManagementMenu>
-        <ConversionMenu></ConversionMenu>
-      </BarWrapperMenus>
-      <BarWrapperMenus  v-if="!simpleModel">
-        <DigitalMenu></DigitalMenu>
-        <ReadMenu></ReadMenu>
-        <RhythmMenu></RhythmMenu>
-        <ContinuousMenu></ContinuousMenu>
-        <AliasMenu></AliasMenu>
-        <EnglishMenu></EnglishMenu>
-      </BarWrapperMenus>
-      <BarWrapperMenus  v-if="!simpleModel">
-        <SpecialMenu></SpecialMenu>
-        <BgmMenu></BgmMenu>
-      </BarWrapperMenus>
-    </BarWrapper>
+    <PlayMenu></PlayMenu>
+    <PinyinMenu></PinyinMenu>
+    <MuteMenu></MuteMenu>
+    <DigitalMenu></DigitalMenu>
+    <ReadMenu></ReadMenu>
+    <ChangespeedMenu></ChangespeedMenu>
+    <ManagementMenu></ManagementMenu>
+    <ConversionMenu v-if="!simpleModel"></ConversionMenu>
+    <RhythmMenu></RhythmMenu>
+    <ContinuousMenu></ContinuousMenu>
+    <AliasMenu></AliasMenu>
+    <EnglishMenu></EnglishMenu>
+    <SpecialMenu v-if="!simpleModel"></SpecialMenu>
+    <BgmMenu v-if="!simpleModel"></BgmMenu>
   </div>
-  <TryPlay></TryPlay>
+  <!-- <TryPlay v-if="!simpleModel"></TryPlay> -->
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.editor-bar {
+  background-color: #eee;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+</style>

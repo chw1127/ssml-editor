@@ -43,7 +43,10 @@ onUnmounted(() => {
 
 onMounted(async () => {
   await handleFetchData()
-  if (dataList.value.length > 0) handleClick(dataList.value[0].value)
+  if(tryPlayStore.speaker.name==""||tryPlayStore.speaker.name=="zh-CN-XiaoxiaoNeural"){
+    if (dataList.value.length > 0) handleClick(dataList.value[0].value)
+  }
+  
 })
 
 async function handleFetchData() {
@@ -66,11 +69,8 @@ async function handleFetchData() {
 </script>
 
 <template>
-  <div
-    style="height: 300px"
-    class="w-100 d-flex flex-row flex-wrap justify-content-start overflow-x-hidden overflow-y-auto scrollbar-none"
-  >
-    <div class="m-1" v-for="(item, index) in dataList" :key="index">
+  <div class="avatar-panle">
+    <div class="item" v-for="(item, index) in dataList" :key="index">
       <SpeakerAvatar
         :data="item"
         :activate="item.value === tryPlayStore.speaker.name"
@@ -80,4 +80,14 @@ async function handleFetchData() {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.avatar-panle{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .item{
+    margin: 5px;
+    cursor: pointer;
+  }
+}
+</style>

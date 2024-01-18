@@ -1,61 +1,28 @@
 <script setup lang="ts">
-import { demoAvatar } from '@/config'
 import type { StyleAvatarData } from './data'
-
 defineEmits<{ click: [value: string] }>()
 defineProps<{ activate?: boolean; data?: StyleAvatarData }>()
 
-function getRandomColor() {
-  const mainstreamColors = [
-    '#2ecc71',
-    '#3498db',
-    '#9b59b6',
-    '#e74c3c',
-    '#1abc9c',
-    '#e67e22',
-    '#d35400',
-    '#c0392b',
-    '#16a085',
-    '#27ae60',
-    '#ff1493',
-  ]
-
-  const randomIndex = Math.floor(Math.random() * mainstreamColors.length)
-  return mainstreamColors[randomIndex]
-}
-
-const bgColor = getRandomColor()
 </script>
 
 <template>
   <div
-    class="anchor-avatar d-flex flex-column align-items-center text-center justify-content-center position-relative"
-    @click="$emit('click', data?.value)"
+    class="anchor-avatar"
+    :class="{ 'activate': activate }"
+    @click="$emit('click', data!.value)"
   >
-    <div
-      v-if="data?.emoji"
-      class="rounded-circle d-flex border-info justify-content-center align-items-center"
-      style="height: 36px; width: 36px"
-      :style="{ 'background-color': bgColor }"
-      :class="{ 'border border-2 border-warning': activate }"
-    >
-      {{ data.emoji }}
-    </div>
-    <img
-      v-else
-      :src="data?.avatar || demoAvatar()"
-      class="rounded-circle"
-      style="height: 36px; width: 36px"
-      :class="{ 'border border-2 border-warning': activate }"
-    />
-    <div class="anchor-avatar-name text-white" style="font-size: 0.8rem">{{ data?.label }}</div>
+  {{ data?.label }}
   </div>
 </template>
 
 <style lang="scss" scoped>
-.anchor-avatar {
-  .anchor-avatar-name {
-    font-size: 12px;
-  }
+.anchor-avatar{
+  margin: 0 5px;
+  padding:2px 5px;
+  cursor: pointer;
+}
+.anchor-avatar.activate{
+  background-color: #eee;
+  border-radius: 5px;
 }
 </style>

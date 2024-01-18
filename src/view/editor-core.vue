@@ -95,7 +95,7 @@ async function initEditorHtml(editor: IDomEditor) {
 </script>
 
 <template>
-  <div ref="boxRef" class="editor-core scrollbar" style="height: 400px; overflow-y: hidden"></div>
+  <div ref="boxRef" class="editor-core scrollbar" style="height: 300px; overflow-y: hidden"></div>
 </template>
 
 <style lang="scss" scoped>

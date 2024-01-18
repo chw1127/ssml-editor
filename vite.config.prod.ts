@@ -16,7 +16,7 @@ export default function (): UserConfig {
           'vite.config.dev.ts',
           'vite.config.prod.ts',
         ],
-        insertTypesEntry: true,
+        insertTypesEntry: true
       }),
     ],
     build: {
@@ -49,6 +49,7 @@ export default function (): UserConfig {
         },
       },
     },
+    
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'),

@@ -28,17 +28,16 @@ defineExpose({
 
 <template>
   <div class="select-list" style="width: 120px">
-    <div class="text-center d-flex flex-column justify-content-center fs-6" style="height: 60px">
+    <div class="slot">
       <slot></slot>
     </div>
     <ul
       ref="listRef"
-      class="text-center w-100 border-start border-top border-bottom border-secondary-subtle overflow-y-auto overflow-x-hidden scrollbar-none"
-      style="height: 180px"
+      class=""
+      style="height: 150px"
     >
       <li
-        class="clickable select-item py-1"
-        style="font-size: 1rem"
+        class="select-item"
         v-for="(item, index) in dataList"
         :class="{ activate: item.value === modelValue }"
         :key="index"
@@ -52,8 +51,30 @@ defineExpose({
 
 <style lang="scss" scoped>
 .select-list {
+  background-color: #fff;
+  .slot{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:4px 0;
+  }
+  ul{
+    list-style: none;
+    padding:0;
+    border:1px solid #eee;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .select-item{
+      font-size: 1rem;
+      padding:2px 5px;
+      text-align: center;
+      overflow-x: hidden;
+    }
+  }
   .activate {
-    color: #3583fb;
+    color: #fff;
+    background-color: #3583fb;
   }
 }
 </style>

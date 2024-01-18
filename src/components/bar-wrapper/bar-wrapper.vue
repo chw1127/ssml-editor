@@ -1,23 +1,24 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="bar-wrapper">
+  <div class="ssml-editor-bar-wrapper">
     <slot></slot>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.bar-wrapper {
+.ssml-editor-bar-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
+  background-color: #eee;
 
   :deep() {
     .divider {
-      height: 40px;
+      height: 20px;
       width: 1px;
       margin: 1px 5px;
-      background-color:#666;
+      background-color:#aaa;
     }
   }
 }

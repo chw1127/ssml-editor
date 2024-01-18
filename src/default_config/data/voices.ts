@@ -6,7 +6,7 @@ export default [
       localeZH: '中文(普通话，简体)',
       LocalName: '晓晓',
       DisplayName: 'Xiaoxiao',
-      VoiceRoleNames: '',
+      VoiceRoleNames: 'Default,YoungAdultFemale',
       VoiceStyleNames: 'Default,assistant,chat,customerservice,newscast,affectionate,angry,calm,cheerful,disgruntled,fearful,gentle,lyrical,sad,serious,poetry-reading,friendly',
   },
   {

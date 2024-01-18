@@ -24,7 +24,7 @@ const handleClick = throttle(async () => {
       <ElIcon v-if="tryPlayStore.isLoading" class="is-loading">
         <Loading></Loading>
       </ElIcon>
-      <span v-else-if="playState === 'paused'" class="fs-3 iconfont-moyin moyin-icon_play"></span>
+      <span v-else-if="playState === 'paused'" class="fs-4 iconfont-moyin moyin-icon_play"></span>
       <span v-else class="iconfont icon-pause"></span>
     </template>
     播放
